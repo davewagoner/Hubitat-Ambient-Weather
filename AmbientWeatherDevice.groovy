@@ -20,14 +20,14 @@ metadata {
 def getWeather() throws groovyx.net.http.HttpResponseException {
     def data = [];
     
-    requestData("/v1/devices/$station", [applicationKey: applicationKey, apiKey: apiKey, limit: 1]) { response ->
+    requestData() { response ->
         data = response.data;
     };
         
 	return data[0];
 }
 
-def requestData(path, query, code) {
+def requestData(code) {
     def params = [
         uri: "https://api.weather.gov/gridpoints/PQR/110,100/forecast",
     ];
