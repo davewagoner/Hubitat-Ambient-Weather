@@ -17,6 +17,36 @@ metadata {
     }
 }
 
+def getWeather() throws groovyx.net.http.HttpResponseException {
+    def data = [];
+    
+    requestData("/v1/devices/$station", [applicationKey: applicationKey, apiKey: apiKey, limit: 1]) { response ->
+        data = response.data;
+    };
+        
+	return data[0];
+}
+
+def requestData(path, query, code) {
+    def params = [
+        uri: "https://api.weather.gov/gridpoints/PQR/110,100/forecast",
+    ];
+    
+    httpGet(params) { response ->
+        code(response);
+    };
+}
+
+//loop
+def fetchNewWeather() {
+        
+    def weather = getWeather();
+    
+    //log.debug("Weather: " + weather);
+	
+	setWeather(weather);
+}
+
 def refresh() {
 	parent.fetchNewWeather(); 
 }
