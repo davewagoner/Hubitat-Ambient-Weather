@@ -48,7 +48,7 @@ def fetchNewWeather() {
 }
 
 def refresh() {
-	parent.fetchNewWeather(); 
+	fetchNewWeather(); 
 }
 
 def setWeather(weather){
