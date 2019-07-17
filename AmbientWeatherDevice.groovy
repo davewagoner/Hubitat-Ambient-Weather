@@ -40,9 +40,13 @@ def fetchNewWeather() {
     def apiUrl = "https://api.weather.gov/gridpoints/PQR/110,100/forecast";
     def card = new JsonSlurper().parse(apiUrl.toURL());
     //def card = new JsonSlurper().parseText(apiUrl.text);
+    def weatherMap = [:];
+    
     def tempInt = card.properties.periods[0].temperature
-    log.debug("reqdataslurper: " + Integer.toString(tempInt));
-    setWeather(tempInt);
+    weatherMap.temperature = Integer.toString(tempInt);
+    weatherMap.icon = card.properties.periods[0].icon;
+    //log.debug("reqdataslurper: " + Integer.toString(tempInt));
+    setWeather(weatherMap);
     return tempInt;
 	
 	
@@ -54,10 +58,11 @@ def refresh() {
 
 def setWeather(weather){
 	//logger("debug", "Weather: "+weather);
-    log.debug("setweather: " + weather);
+    log.debug("setweather: " + weather.temperature);
 	
 	//Set temperature
-	sendEvent(name: "temperature", value: weather, unit: '°F', isStateChange: true, displayed: true);
+	sendEvent(name: "temperature", value: weather.temperature, unit: '°F', isStateChange: true, displayed: true);
+    sendEvent(name: "icon", value: weather.icon, isStateChange: true, displayed: true);
 }
 
 private logger(type, msg){
