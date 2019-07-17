@@ -42,9 +42,10 @@ def fetchNewWeather() {
     //def card = new JsonSlurper().parseText(apiUrl.text);
     def tempInt = card.properties.periods[0].temperature
     log.debug("reqdataslurper: " + Integer.toString(tempInt));
+    setWeather(tempInt);
     return tempInt;
 	
-	setWeather(tempInt);
+	
 }
 
 def refresh() {
@@ -52,10 +53,11 @@ def refresh() {
 }
 
 def setWeather(weather){
-	logger("debug", "Weather: "+weather);
+	//logger("debug", "Weather: "+weather);
+    log.debug("setweather: " + weather);
 	
 	//Set temperature
-	sendEvent(name: "temperature", value: weather.tempf, unit: '°F', isStateChange: true);
+	sendEvent(name: "temperature", value: weather, unit: '°F', isStateChange: true, displayed: true);
 }
 
 private logger(type, msg){
