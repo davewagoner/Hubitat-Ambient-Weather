@@ -16,6 +16,7 @@ metadata {
         }
     }
 }
+import groovy.json.JsonSlurper
 
 def getWeather() throws groovyx.net.http.HttpResponseException {
     def data = [];
@@ -23,28 +24,27 @@ def getWeather() throws groovyx.net.http.HttpResponseException {
     requestData() { response ->
         data = response.data;
     };
-        
+    log.debug("daveweather: " + data);
 	return data[0];
 }
 
-def requestData(code) {
-    def params = [
-        uri: "https://api.weather.gov/gridpoints/PQR/110,100/forecast",
-    ];
-    
-    httpGet(params) { response ->
-        code(response);
-    };
+def requestData() {
+    def apiUrl = "https://api.weather.gov/gridpoints/PQR/110,100/forecast";
+    def card = new JsonSlurper().parse(apiUrl);
+    log.debug("reqdataslurper: " + card);
+    return card;
 }
 
 //loop
 def fetchNewWeather() {
-        
-    def weather = getWeather();
-    
-    //log.debug("Weather: " + weather);
+    def apiUrl = "https://api.weather.gov/gridpoints/PQR/110,100/forecast";
+    def card = new JsonSlurper().parse(apiUrl.toURL());
+    //def card = new JsonSlurper().parseText(apiUrl.text);
+    def tempInt = card.properties.periods[0].temperature
+    log.debug("reqdataslurper: " + Integer.toString(tempInt));
+    return tempInt;
 	
-	setWeather(weather);
+	setWeather(tempInt);
 }
 
 def refresh() {
