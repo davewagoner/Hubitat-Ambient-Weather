@@ -1,3 +1,13 @@
+/*
+master: https://api.weather.gov/points/45.449,-122.714
+daily forecast: https://api.weather.gov/gridpoints/PQR/110,100/forecast
+
+todo: 
+- add logic check for today's high temp based on date, isDaytime
+- add temp units
+
+
+*/
 metadata {
     definition(name: "Weather.gov Forecast Device", namespace: "davewagoner", author: "davewagoner") {
         capability "Temperature Measurement"
